@@ -18,18 +18,38 @@ const App: React.FC = () => {
         formData.append("file", selectedFile);
 
         try {
+            // Start the job (get job id)
             const res = await fetch("https://backend-pdf2html.onrender.com/upload", {
-                //testing:
-                //reality: https://backend-pdf2html.onrender.com/upload
                 method: "POST",
                 body: formData,
             });
             const data = await res.json();
 
-            console.log(data);
-            // Directly display HTML (no polling)
-            setHtmlContent(data.html);
-            setLoading(false);
+            if (!data.job_id) throw new Error("No job ID returned");
+
+            const startTime = Date.now();
+            const MAX_WAIT_TIME_MS = 5 * 60 * 1000; // Waiting for 5 minutes
+
+            // Polling the result
+            const pollInterval = setInterval(async () => {
+                // Check timeout
+                if (Date.now() - startTime > MAX_WAIT_TIME_MS) {
+                    setLoading(false);
+                    clearInterval(pollInterval);
+                    alert("Timeout: PDF processing took longer than 5 minutes.");
+                    return;
+                }
+
+                const res2 = await fetch(`https://backend-pdf2html.onrender.com/result/${data.job_id}`);
+                const resultData = await res2.json();
+
+                if (resultData.status === "done") {
+                    setHtmlContent(resultData.html);
+                    setLoading(false);
+                    clearInterval(pollInterval);
+                }
+            }, 2000); // Again, polling for every 2 seconds
+
         } catch (err: unknown) {
             setLoading(false);
             if (err instanceof Error) {
@@ -39,6 +59,7 @@ const App: React.FC = () => {
             }
         }
     };
+
 
 
     //handling the dropping.
