@@ -44,7 +44,7 @@ const App: React.FC = () => {
                 const resultData = await res2.json();
 
                 if (resultData.status === "done") {
-                    setHtmlContent(resultData.html);
+                    setHtmlContent(resultData);
                     setLoading(false);
                     clearInterval(pollInterval);
                 }
