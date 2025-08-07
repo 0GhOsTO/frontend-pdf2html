@@ -19,11 +19,14 @@ const App: React.FC = () => {
 
         try {
             const res = await fetch("https://backend-pdf2html.onrender.com/upload", {
+                //testing:
+                //reality: https://backend-pdf2html.onrender.com/upload
                 method: "POST",
                 body: formData,
             });
             const data = await res.json();
 
+            console.log(data);
             // Directly display HTML (no polling)
             setHtmlContent(data.html);
             setLoading(false);
