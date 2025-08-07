@@ -1,69 +1,34 @@
-# React + TypeScript + Vite
+# [PDF2HTML website](https://frontend-pdf2html.vercel.app/)
+[Backend Github](https://github.com/0GhOsTO/backend-pdf2html)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Converting a Colorado real estate document to HTML format
+The website will not currently work to block unnecessary usage of Amazon service.
 
-Currently, two official plugins are available:
+## Overview
+### Description
+This is Andrew Cho's website project created with React, Typescript, Python, Python Flask, Render.com, Vercel.com, Textract, Amazon S3
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Web Description
+- **Category:** Converter Website / Tool
 
-## Expanding the ESLint configuration
+## Product Spec
+![Mock Walk through](https://github.com/0GhOsTO/backend-pdf2html/blob/main/pdf2htmlmock.gif)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Beautifully baked with cycle: both day & night
+- Pixel per ratio is 2(lower 2 resulted multiple mimap errors)
+- Used DRACO
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Process
+1. Created the backend and testing using the google colab
+2. Apply in Python locally
+3. Attach the Python Flask
+4. Create the frontend website using React
+5. Connect frontend and backend with Python Flask
+6. Upload the documented files in Amazon s3.
+7. Fix the minor bugs, including the CORS bug(took 6hours to fix this bug).
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+# To be updated
+- Copy and paste button.
+- Algorithm needs to be updated to be more precise.
+- Designs of the website needs to be updated.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
