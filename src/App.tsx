@@ -7,16 +7,12 @@ const App: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
     const [htmlContent, setHtmlContent] = useState<string | null>(null);
-    //for loading screen
-    const [jobId, setJobId] = useState<string | null>(null);
-    const [pollingInterval, setPollingInterval] = useState<number | null>(null);
 
     //handling the submit button
     const handleSubmit = async () => {
         if (!selectedFile) return;
         setLoading(true);
         setHtmlContent(null);
-        setJobId(null);
 
         const formData = new FormData();
         formData.append("file", selectedFile);
@@ -27,30 +23,13 @@ const App: React.FC = () => {
                 body: formData,
             });
             const data = await res.json();
-            if (!data.job_id) throw new Error("No job ID returned");
-            setJobId(data.job_id);
 
-            // Poll for result every 2s
-            const interval = setInterval(async () => {
-                const res2 = await fetch(`https://backend-pdf2html.onrender.com/result/${data.job_id}`);
-                const resultData = await res2.json();
-                if (resultData.status === "done") {
-                    setHtmlContent(resultData.html);
-                    setLoading(false);
-                    setJobId(null);
-                    clearInterval(interval);
-                    setPollingInterval(null);
-                }
-            }, 2000);
-            setPollingInterval(interval);
-
+            // Directly display HTML (no polling)
+            setHtmlContent(data.html);
+            setLoading(false);
         } catch (err: unknown) {
             setLoading(false);
-            setJobId(null);
-            if (pollingInterval) clearInterval(pollingInterval);
-            if (err instanceof DOMException && err.name === "AbortError") {
-                console.log("Stopped by the user")
-            } else if (err instanceof Error) {
+            if (err instanceof Error) {
                 alert("Error: " + err.message);
             } else {
                 alert("Error: " + String(err));
@@ -58,16 +37,6 @@ const App: React.FC = () => {
         }
     };
 
-    //handling the stopping cancelling the fetching after the call.
-    const handleStop = async () => {
-        if (pollingInterval) clearInterval(pollingInterval);
-        setPollingInterval(null);
-        setLoading(false);
-
-        if (jobId) {
-            await fetch(`https://backend-pdf2html.onrender.com/cancel/${jobId}`, { method: "POST" });
-        }
-    };
 
     //handling the dropping.
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -123,14 +92,6 @@ const App: React.FC = () => {
                     }}
                 >
                     <Typography variant="h3">Processing your PDF...</Typography>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        sx={{ mt: 2 }}
-                        onClick={handleStop}
-                    >
-                        Stop
-                    </Button>
                 </Box>
             )}
             <Typography
