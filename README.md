@@ -12,12 +12,8 @@ This is Andrew Cho's website project created with React, Typescript, Python, Pyt
 ### Web Description
 - **Category:** Converter Website / Tool
 
-## Product Spec
+## Mock Walk through of the website
 ![Mock Walk through](https://github.com/0GhOsTO/backend-pdf2html/blob/main/pdf2htmlmock.gif)
-
-- Beautifully baked with cycle: both day & night
-- Pixel per ratio is 2(lower 2 resulted multiple mimap errors)
-- Used DRACO
 
 ### Process
 1. Created the backend and testing using the google colab
